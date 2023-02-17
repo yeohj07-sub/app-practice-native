@@ -1,6 +1,5 @@
-import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
 import React, { useEffect, useRef } from "react";
+import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { isLoggedInVar } from "../apollo";
 import AuthButton from "../components/auth/AuthButton";
@@ -17,8 +16,13 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-export default function LogIn() {
-  const { register, handleSubmit, setValue, watch } = useForm();
+export default function LogIn({ route: { params } }) {
+  const { register, handleSubmit, setValue, watch } = useForm({
+    defaultValues: {
+      username: params?.username,
+      password: params?.password,
+    },
+  });
   const passwordRef = useRef();
   const onCompleted = (data) => {
     const {
@@ -54,6 +58,7 @@ export default function LogIn() {
   return (
     <AuthLayOut>
       <TextInput
+        value={watch("username")}
         placeholder="Username"
         returnKeyType="next"
         autoCapitalize={"none"}
@@ -63,6 +68,7 @@ export default function LogIn() {
         onChangeText={(text) => setValue("username", text)}
       />
       <TextInput
+        value={watch("password")}
         ref={passwordRef}
         placeholder="Password"
         secureTextEntry
