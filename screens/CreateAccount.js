@@ -19,11 +19,21 @@ export default function CreateAccount() {
     console.log(data);
   };
   useEffect(() => {
-    register("firstName");
-    register("lastName");
-    register("username");
-    register("email");
-    register("password");
+    register("firstName", {
+      required: true,
+    });
+    register("lastName", {
+      required: true,
+    });
+    register("username", {
+      required: true,
+    });
+    register("email", {
+      required: true,
+    });
+    register("password", {
+      required: true,
+    });
   }, [register]);
   return (
     <AuthLayout>
@@ -68,13 +78,17 @@ export default function CreateAccount() {
         placeholder="Password"
         secureTextEntry
         returnKeyType="done"
-        onSubmitEditing={onValid}
         lastOne={true}
         placeholderTextColor={"rgba(255, 255, 255, 0.3)"}
         blurOnSubmit={false}
         onChangeText={(text) => setValue("password", text)}
+        onSubmitEditing={handleSubmit(onValid)}
       />
-      <AuthButton text="Create Accout" disabled={true} onPress={() => null} />
+      <AuthButton
+        text="Create Accout"
+        disabled={false}
+        onPress={handleSubmit(onValid)}
+      />
     </AuthLayout>
   );
 }

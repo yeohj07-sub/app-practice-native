@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.8",
     "@expo/webpack-config": "^0.17.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.1.4",
@@ -20,6 +21,7 @@
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "font": "0.0.4",
+    "graphql": "^16.6.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.43.1",
