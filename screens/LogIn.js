@@ -1,5 +1,4 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
 import AuthLayOut from "../components/auth/AuthLayout";
 import { TextInput } from "../components/auth/AuthShared";
 
@@ -9,7 +8,6 @@ export default function LogIn({ navigation }) {
       <TextInput
         placeholder="Username"
         returnKeyType="next"
-        onSubmitEditing={() => onNext(emailRef)}
         placeholderTextColor={"rgba(255, 255, 255, 0.3)"}
         blurOnSubmit={false}
       />
