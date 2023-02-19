@@ -37,7 +37,7 @@ export default function Feed({ navigation }) {
     <ScreenLayout loading={loading}>
       <FlatList
         data={data?.seeFeed}
-        keyExtractor={(photo) => "" + photo.id}
+        keyExtrsor={(photo) => "" + photo.id}
         renderItem={renderPhoto}
       />
     </ScreenLayout>
