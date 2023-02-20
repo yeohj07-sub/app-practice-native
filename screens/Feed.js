@@ -25,7 +25,7 @@ const FEED_QUERY = gql`
   ${COMMENT_FRAGMENT}
 `;
 
-export default function Feed({ navigation }) {
+export default function Feed() {
   const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       offset: 0,
@@ -43,6 +43,7 @@ export default function Feed({ navigation }) {
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        onEndReachedThreshold={0.1}
         onEndReached={() =>
           fetchMore({
             variables: {
@@ -50,7 +51,6 @@ export default function Feed({ navigation }) {
             },
           })
         }
-        onEndReachedThreshold={0.05}
         refreshing={refreshing}
         onRefresh={refresh}
         style={{ width: "100%" }}
