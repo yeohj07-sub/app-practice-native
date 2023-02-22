@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
 import { Image, TouchableOpacity, useWindowDimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { gql, useMutation } from "@apollo/client";
 
 const TOGGLE_LIKE_MUTATION = gql`
@@ -22,6 +22,7 @@ const Header = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 `;
+
 const UserAvatar = styled.Image`
   margin-right: 10px;
   width: 26px;
@@ -130,7 +131,13 @@ function Photo({ id, user, caption, file, isLiked, likes }) {
             <Ionicons name="chatbubble-outline" color="white" size={22} />
           </Action>
         </Actions>
-        <TouchableOpacity onPress={() => navigation.navigate("Likes")}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Likes", {
+              photoId: id,
+            })
+          }
+        >
           <Likes>{likes === 1 ? "1 like" : `${likes} likes`}</Likes>
         </TouchableOpacity>
         <Caption>
