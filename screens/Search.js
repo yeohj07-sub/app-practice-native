@@ -74,7 +74,6 @@ export default function Search({ navigation }) {
       minLength: 3,
     });
   }, []);
-  console.log(data);
   const renderItem = ({ item: photo }) => (
     <TouchableOpacity
       onPress={() =>
