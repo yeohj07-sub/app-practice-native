@@ -1,7 +1,7 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, StatusBar, Text, TouchableOpacity } from "react-native";
+import { Alert, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 import Slider from "@react-native-community/slider";
 import styled from "styled-components/native";
 import { useIsFocused } from "@react-navigation/native";
@@ -97,7 +97,24 @@ export default function TakePhoto({ navigation }) {
       setFlashMode(Camera.Constants.FlashMode.off);
     }
   };
-  const isFocused = useIsFocused();
+  const goToUpload = async (save) => {
+    if (save) {
+      await MediaLibrary.saveToLibraryAsync(takenPhoto);
+    }
+    console.log("Will upload", takenPhoto);
+  };
+  const onUpload = () => {
+    Alert.alert("Save photo?", "Save photo & upload or just upload?", [
+      {
+        text: "Save & Upload",
+        onPress: () => goToUpload(true),
+      },
+      {
+        text: "Just Upload",
+        onPress: () => goToUpload(false),
+      },
+    ]);
+  };
   const onCameraReady = () => setCameraReady(true);
   const takePhoto = async () => {
     if (camera.current && cameraReady) {
@@ -110,6 +127,7 @@ export default function TakePhoto({ navigation }) {
     }
   };
   const onDismiss = () => setTakenPhoto("");
+  const isFocused = useIsFocused();
   return isFocused ? (
     <Container>
       <StatusBar hidden={true} />
@@ -142,12 +160,8 @@ export default function TakePhoto({ navigation }) {
             />
           </SliderContainer>
           <ButtonsContainer>
-            <TakePhotoBtn onPress={takePhoto} />
             <ActionsContainer>
-              <TouchableOpacity
-                onPress={onFlashChnange}
-                style={{ marginRight: 30 }}
-              >
+              <TouchableOpacity onPress={onFlashChnange}>
                 <Ionicons
                   size={30}
                   color="white"
@@ -162,6 +176,9 @@ export default function TakePhoto({ navigation }) {
                   }
                 />
               </TouchableOpacity>
+            </ActionsContainer>
+            <TakePhotoBtn onPress={takePhoto} />
+            <ActionsContainer>
               <TouchableOpacity onPress={onCameraSwitch}>
                 <Ionicons
                   color="white"
@@ -181,11 +198,8 @@ export default function TakePhoto({ navigation }) {
           <PhotoAction onPress={onDismiss}>
             <PhotoActionText>Dismiss</PhotoActionText>
           </PhotoAction>
-          <PhotoAction>
+          <PhotoAction onPress={onUpload}>
             <PhotoActionText>Upload</PhotoActionText>
-          </PhotoAction>
-          <PhotoAction>
-            <PhotoActionText>Save & Upload</PhotoActionText>
           </PhotoAction>
         </Actions>
       )}
