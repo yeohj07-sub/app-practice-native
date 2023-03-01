@@ -18,6 +18,7 @@ const SEND_MESSAGE_MUTATION = gql`
 const ROOM_QUERY = gql`
   query seeRoom($id: Int!) {
     seeRoom(id: $id) {
+      id
       messages {
         id
         payload
@@ -66,8 +67,8 @@ const TextInput = styled.TextInput`
 `;
 
 export default function Room({ route, navigation }) {
-  const { date: meData } = useMe();
-  const { register, setValue, handleSubmit, getValues } = useForm();
+  const { data: meData } = useMe();
+  const { register, setValue, handleSubmit, getValues, watch } = useForm();
   const updateSendMessage = (cache, result) => {
     const {
       data: {
@@ -76,6 +77,7 @@ export default function Room({ route, navigation }) {
     } = result;
     if (ok && meData) {
       const { message } = getValues();
+      setValue("message", "");
       const messageObj = {
         id,
         payload: message,
@@ -104,7 +106,7 @@ export default function Room({ route, navigation }) {
         id: `Room:${route.params.id}`,
         fields: {
           messages(prev) {
-            return [messageFragment, ...prev];
+            return [...prev, messageFragment];
           },
         },
       });
@@ -153,13 +155,13 @@ export default function Room({ route, navigation }) {
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "black" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={100}
+      keyboardVerticalOffset={50}
     >
       <ScreenLayout loading={loading}>
         <FlatList
           // inverted
-          style={{ width: "100%", paddingTop: 10 }}
-          ItemSeparatorComponent={() => <View style={{ height: 5 }}></View>}
+          style={{ width: "100%", paddingVertical: 10 }}
+          ItemSeparatorComponent={() => <View style={{ height: 15 }}></View>}
           data={data?.seeRoom?.messages}
           keyExtractor={(message) => "" + message.id}
           renderItem={renderItem}
@@ -171,6 +173,7 @@ export default function Room({ route, navigation }) {
           returnKeyType="send"
           onChangeText={(text) => setValue("message", text)}
           onSubmitEditing={handleSubmit(onValid)}
+          value={watch("message")}
         />
       </ScreenLayout>
     </KeyboardAvoidingView>

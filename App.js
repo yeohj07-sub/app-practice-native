@@ -30,9 +30,9 @@ export default function App() {
     }
     StatusBar.setBarStyle("light-content");
     // await persistCache({
-    //   cache,
-    //   storage: new AsyncStorageWrapper(AsyncStorage),
-    //   serialize: false,
+    // cache,
+    // storage: new AsyncStorageWrapper(AsyncStorage),
+    // serialize: false,
     // });
     return preloadAssets();
   };
