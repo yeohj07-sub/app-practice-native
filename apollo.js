@@ -1,10 +1,4 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  makeVar,
-  split,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar, split } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import {
@@ -13,8 +7,9 @@ import {
 } from "@apollo/client/utilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUploadLink } from "apollo-upload-client";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
+// import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+// import { createClient } from "graphql-ws";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 export const isLoggedInVar = makeVar(false);
 export const tokenVar = makeVar("");
@@ -37,17 +32,15 @@ const uploadHttpLink = createUploadLink({
   uri: "https://ea0e-106-101-65-144.jp.ngrok.io/graphql",
 });
 
-const wsLink = new GraphQLWsLink(
-  createClient({
-    uri: "ws://ea0e-106-101-65-144.jp.ngrok.io/graphql",
-    options: {
-      reconnect: true,
-      connectionParams: {
-        token: tokenVar(),
-      },
-    },
-  })
-);
+const wsLink = new WebSocketLink({
+  uri: "ws://ea0e-106-101-65-144.jp.ngrok.io/graphql",
+  options: {
+    reconnect: true,
+    connectionParams: () => ({
+      token: tokenVar(),
+    }),
+  },
+});
 
 const authLink = setContext((_, { headers }) => {
   return {
