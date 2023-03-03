@@ -29,11 +29,11 @@ export const logUserOut = async () => {
 };
 
 const uploadHttpLink = createUploadLink({
-  uri: "https://ea0e-106-101-65-144.jp.ngrok.io/graphql",
+  uri: "https://80a2-58-122-100-96.jp.ngrok.io/graphql",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://ea0e-106-101-65-144.jp.ngrok.io/graphql",
+  uri: "ws://80a2-58-122-100-96.jp.ngrok.io/graphql",
   options: {
     reconnect: true,
     connectionParams: () => ({
